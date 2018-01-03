@@ -3,6 +3,7 @@ package io.github.tormundsmember.thunderstack.navigation;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import io.github.tormundsmember.thunderstack.navigation.movehandlerimplementations.SlideMoveHandler;
 
 public class MoveTransaction implements Parcelable {
 
