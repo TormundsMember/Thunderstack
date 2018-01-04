@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.transition.ChangeBounds;
 import android.support.transition.Transition;
+import android.view.View;
 import android.view.ViewGroup;
 import io.github.tormundsmember.thunderstack.navigation.MoveHandler;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by Tormund Thunderfist on 31.12.2017. Copyright: tormundsmember.github.io
  */
 
-public class SharedElementMoveHandler implements MoveHandler {
+public class SharedElementMoveHandler extends MoveHandler {
 
   private List<String> transitionNames;
 
@@ -22,7 +23,7 @@ public class SharedElementMoveHandler implements MoveHandler {
     this.transitionNames = transitionNames;
   }
 
-  @NonNull @Override public Transition handleEnter(ViewGroup oldView, ViewGroup newView) {
+  @NonNull @Override public Transition getEnterTransition(ViewGroup containerView, View oldView, View newView) {
     final Transition changeBounds = new ChangeBounds();
     for (String transitionName : transitionNames) {
       changeBounds.addTarget(transitionName);
@@ -30,7 +31,7 @@ public class SharedElementMoveHandler implements MoveHandler {
     return changeBounds;
   }
 
-  @NonNull @Override public Transition handleExit(ViewGroup oldView, ViewGroup newView) {
+  @NonNull @Override public Transition getExitTransition(ViewGroup containerView, View oldView, View newView) {
     final Transition changeBounds = new ChangeBounds();
     for (String transitionName : transitionNames) {
       changeBounds.addTarget(transitionName);

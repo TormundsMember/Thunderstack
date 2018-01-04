@@ -3,6 +3,7 @@ package io.github.tormundsmember.thunderstack.navigation;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import io.github.tormundsmember.thunderstack.navigation.movehandlerimplementations.FadeChangeHandler;
 import io.github.tormundsmember.thunderstack.navigation.movehandlerimplementations.SlideMoveHandler;
 
 public class MoveTransaction implements Parcelable {
@@ -17,7 +18,7 @@ public class MoveTransaction implements Parcelable {
    * uses the default {@link SlideMoveHandler}
    */
   public MoveTransaction(@NonNull BaseKey baseKey) {
-    this(baseKey, new SlideMoveHandler());
+    this(baseKey, new FadeChangeHandler());
   }
 
   /**

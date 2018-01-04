@@ -55,7 +55,8 @@ public class NavigationStack {
     if (rootView.getChildCount() != 0) {
       final ViewGroup oldView = (ViewGroup) rootView.getChildAt(0);
       TransitionSet transition = new TransitionSet();
-      transition.addTransition(transaction.getMoveHandler().handleEnter(oldView, newView));
+      final MoveHandler moveHandler = transaction.getMoveHandler();
+      transition.addTransition(moveHandler.getEnterTransition(null, oldView, newView));
       if (areAnimationsEnabled) {
         TransitionManager.beginDelayedTransition(rootView, transition);
       }
@@ -74,8 +75,7 @@ public class NavigationStack {
   public void setHistory(@NonNull List<MoveTransaction> transactions) {
     this.keyStack = new Stack<>();
     keyStack.addAll(transactions);
-    keyStack.pop();
-    goTo(transactions.get(transactions.size() - 1));
+    goTo(keyStack.pop());
   }
 
   /**
@@ -108,12 +108,20 @@ public class NavigationStack {
       if (rootView.getChildCount() != 0) {
         TransitionSet transition = new TransitionSet();
         final ViewGroup oldView = (ViewGroup) rootView.getChildAt(0);
-        transition.addTransition(handler.handleExit(oldView, newView));
+        ViewGroup container = null;
+        boolean handleChange;
+        if (handleChange = handler.handleExit()) {
+          container = rootView;
+        }
+        //noinspection unchecked
+        transition.addTransition(handler.getExitTransition(container, oldView, newView));
         if (areAnimationsEnabled) {
           TransitionManager.beginDelayedTransition(rootView, transition);
         }
-        rootView.removeView(oldView);
-        rootView.addView(newView);
+        if (handleChange) {
+          rootView.removeView(oldView);
+          rootView.addView(newView);
+        }
       } else {
         rootView.addView(newView);
       }
